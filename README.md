@@ -10,6 +10,53 @@ It uses a protocol I made to sync the devices before every character is sent. Th
 
 Data is broken down character by character to binary before being sent with light = 1 and dark = 0. A clock speed is entered in each time before sending data. It currently has a very simple GUI using the Arduino Serial Monitor.
 
+## Sending Data
+
+Here's the main code that sends the data. This is done after an initial couple bits to get the clock speed calibrated. The receiving device uses the initial LOW HIGH to find the rising edge for timing each character.
+
+```
+void sendChar(char Byte) {
+  digitalWrite(DATA_OUT, LOW);
+  delayMicroseconds(clk);
+  digitalWrite(DATA_OUT, HIGH);
+  delayMicroseconds(clk);
+
+  for (int i = 0; i < 7; i++) {
+    int x = bitRead(Byte, i);
+    digitalWrite(DATA_OUT, x);
+    delayMicroseconds(clk);
+  }
+}
+```
+
+## Receiving Data
+
+This is a snippet of how the receiving end handles the light. After it senses data is starting to be sent it shifts half a clock cycle to make sure it's reading in the middle of a bit, and then it calculates the next 7 times to read, and then delays and reads until the character is done being sent. During this it adds each bit to the variable 'x' and then adds this to the full text string 'text'.
+
+```
+  if(dataAvailable == true) {
+    unsigned long startClk = micros();
+    unsigned long bitTimes[8];
+    for(int i = 0; i < 7; i++) {
+      bitTimes[i] = 1.5 * clk + startClk + i * clk;
+    }
+    for(int i = 0; i < 7; i++) {
+      while(micros() < bitTimes[i]) {}
+      if(analogRead(LIGHT_SENSOR) > minLight) {
+        bitSet(x, i);
+      } else {
+        bitClear(x, i);
+      }
+    }
+    if(x == 0) {
+      dataAvailable = false;
+    } else {
+      text += x;
+    }
+    delayMicroseconds(clk / 2);
+  }
+```
+
 ## Setup
 
 Supplies:
@@ -23,7 +70,7 @@ Supplies:
 
 Load up the receiving_data sketch on the receiving Arduino, and then wire up the screen per the pinout in the sketch, and connect the photo transistor with the readout voltage going to the A0 ADC.
 
-Load up the sending_device sketch on the other Arduino, connect the LED to pin 9 and then to the resistor and ground in serial. Keep this plugged in to the computer and open the serial monitor.
+Load up the sending_device sketch on the other Arduino, connect the LED to pin 9 and then to the resistor and ground in serial. Keep this plugged in to the computer and open the serial monitor. Toggle the commented area in the loop{}, as described in the file, to use the serial input as the text. It is currently setup in 'debuggin' which is an automatic transfer using the text in the file an 200 us clock speed.
 
 ## Images
 

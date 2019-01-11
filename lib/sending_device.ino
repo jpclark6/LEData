@@ -26,6 +26,7 @@ void loop() {
 //    textData = Serial.readString();
 //    sendData(textData);
 //  }
+// delay(5000);
 ////////////////////////////////////////////////////////////////
 // COMMENT TO USE WITH SERIAL FROM COMPUTER
   String textData = "Looping test at 200  us. Appx 5 KHz clock, appx. 3 kbit/s data transfer. This much  text will take appx. 0.24 seconds to transfer.";
@@ -33,6 +34,7 @@ void loop() {
   sendData(textData);
 
   delay(12000);
+////////////////////////////////////////////////////////////////
 }
 
 void sendData(String text) {
@@ -51,7 +53,7 @@ void sendData(String text) {
     digitalWrite(DATA_OUT, LOW);
     delayMicroseconds(clk);
   }
-  
+
   for (int i = 0; i < stringLength; i++) {
     char nextChar = text.charAt(i);
     sendChar(nextChar);

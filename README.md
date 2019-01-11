@@ -1,4 +1,4 @@
-# Asynchronous Data Transfer With Arduino Using Light
+# Asynchronous Data Transfer With Light Using Arduino
 
 ## Introduction
 

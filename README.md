@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This was an Aruino project I did as an experiment to see whether I could transfer data from one Arduino to another using light, and if so, how fast could I get it? It uses an LED on one Arduino and a light sensor on a different Arduino. After a lot of experimentation I was able to get it to about 3 kbps data transfer rate of useable data at about 5 kbps gross bit rate. The max working spacing between the sensor and LED is currently about 2 inches.
+This was an Arduino project I did as an experiment to see whether I could transfer data from one Arduino to another using light, and if so, how fast could I get it? It uses an LED on one Arduino and a light sensor on a different Arduino. After a lot of experimentation I was able to get it to about 3 kbps data transfer rate of useable data at about 5 kbps gross bit rate. The max working spacing between the sensor and LED is currently about 2 inches.
 
 It uses a protocol I made to sync the devices before every character is sent. The slave device waits for the light to turn on, calculates the clock speed after a few light pulses (can currently take a clock speed between 100 microseconds and about 50 milliseconds), and then synchronizes the signal before every character is read. Once the data is read it displays it on a small screen found here - https://www.adafruit.com/product/1673 .
 

@@ -36,7 +36,11 @@ Originally I used a photo cell but started running in to issues after decreasing
 
 ![](/images/photocell.png?raw=true)
 ![](/images/trans.png?raw=true)
+
 Close ups of the fall time
+
 ![](/images/photocell_fall.png?raw=true)
+
 Note even with much higher resolution in time compared to the previous graph there is still no reading that wasn't either high or low despite how it may look.
+
 ![](/images/trans_fall.png?raw=true)

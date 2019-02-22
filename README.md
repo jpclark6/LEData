@@ -6,13 +6,13 @@ This was an Arduino project I did as an experiment to see whether I could transf
 
 ### See a working video [here.](https://youtu.be/fEUkzCr64Jk)
 
-It uses a protocol I made to sync the devices before every character is sent. The slave device waits for the light to turn on, calculates the clock speed after a few light pulses (can currently take a clock speed between 100 microseconds and about 50 milliseconds), and then synchronizes the signal before every character is read. Once the data is read it displays it on a small screen found here - https://www.adafruit.com/product/1673 .
+It uses a protocol I made to sync the devices before every character is sent. The receiving device waits for the light to turn on, calculates the clock speed after a few light pulses (can currently take a clock speed down to about 50 milliseconds), and then synchronizes the signal before every character is read. Once the data is read it displays it on a small screen found here - https://www.adafruit.com/product/1673 .
 
 Data is broken down character by character to binary before being sent with light = 1 and dark = 0. A clock speed is entered in each time before sending data. It currently has a very simple GUI using the Arduino Serial Monitor.
 
 ## Sending Data
 
-Here's the main code that sends the data. This is done after an initial couple bits to get the clock speed calibrated. The receiving device uses the initial LOW HIGH to find the rising edge for timing each character.
+Here's the main code snippet that sends the data. This is done after an initial couple bits to get the clock speed calibrated. The receiving device uses the initial LOW HIGH to find the rising edge for timing each character.
 
 ```
 void sendChar(char Byte) {
@@ -31,7 +31,7 @@ void sendChar(char Byte) {
 
 ## Receiving Data
 
-This is a snippet of how the receiving end handles the light. After it senses data is starting to be sent it shifts half a clock cycle to make sure it's reading in the middle of a bit, and then it calculates the next 7 times to read, and then delays and reads until the character is done being sent. During this it adds each bit to the variable 'x' and then adds this to the full text string 'text'.
+This is a snippet of how the receiving end handles the light. After it senses that data is starting to be sent it shifts half of a clock cycle to make sure it's reading in the middle of a bit, and then it calculates the next 7 times to sample the light, and then delays and reads until the character is done being sent. During this it adds each bit to the variable 'x' and then adds this to the full text string 'text'.
 
 ```
   if(dataAvailable == true) {
